@@ -3,99 +3,154 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Black Voyage — Email Marketing</title>
+<title>Black Voyage — Email Marketing OS · System Console</title>
 <style>
   :root { --bg:#0b0b0d; --panel:#15161a; --line:#26282f; --ink:#f4f5f7; --mut:#9aa0ab; --mint:#2BE5A3; --red:#ff6b6b; --amber:#EF9F27; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-  header { padding:28px 32px; border-bottom:1px solid var(--line); display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  header { padding:26px 32px; border-bottom:1px solid var(--line); }
   h1 { font-size:20px; margin:0; letter-spacing:.5px; } h1 b { color:var(--mint); }
-  .sub { color:var(--mut); font-size:13px; }
-  main { padding:24px 32px; max-width:1100px; }
-  .cards { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; min-width:130px; }
-  .card .n { font-size:26px; font-weight:700; } .card .l { color:var(--mut); font-size:12px; text-transform:uppercase; letter-spacing:.6px; }
-  section { margin-bottom:34px; }
-  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.8px; color:var(--mut); border-bottom:1px solid var(--line); padding-bottom:8px; }
-  table { width:100%; border-collapse:collapse; font-size:14px; }
-  th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); }
+  .sub { color:var(--mut); font-size:13px; margin-top:4px; }
+  main { padding:24px 32px; max-width:1080px; }
+  section { margin-bottom:38px; }
+  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.9px; color:var(--mut); border-bottom:1px solid var(--line); padding-bottom:8px; }
+  .map { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; overflow-x:auto; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+  .comp { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:13px 15px; }
+  .comp .t { font-weight:650; font-size:14px; } .comp .d { color:var(--mut); font-size:12.5px; margin-top:3px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; vertical-align:middle; }
+  .live { background:var(--mint); } .pend { background:var(--amber); } .off { background:var(--red); }
+  .tag { float:right; font-size:11px; color:var(--mut); text-transform:uppercase; letter-spacing:.5px; }
+  .loop { display:flex; gap:10px; flex-wrap:wrap; }
+  .step { background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:13px; }
+  .step b { color:var(--mint); }
+  table { width:100%; border-collapse:collapse; font-size:14px; } th,td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); }
   th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
   .pill { display:inline-block; padding:2px 9px; border-radius:999px; font-size:12px; font-weight:600; }
-  .miss { background:rgba(255,107,107,.15); color:var(--red); } .live { background:rgba(43,229,163,.15); color:var(--mint); } .paused { background:rgba(239,159,39,.15); color:var(--amber); }
-  .bar { height:6px; background:#23252c; border-radius:4px; overflow:hidden; } .bar > i { display:block; height:100%; background:var(--mint); }
+  .miss { background:rgba(255,107,107,.15); color:var(--red); } .lv { background:rgba(43,229,163,.15); color:var(--mint); } .pa { background:rgba(239,159,39,.15); color:var(--amber); }
+  .gate { background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:20px; }
+  .gate input { background:#0e0f12; border:1px solid var(--line); color:var(--ink); padding:10px 13px; border-radius:9px; font-size:15px; width:220px; }
+  .gate button { background:var(--mint); color:#06251a; border:0; padding:10px 16px; border-radius:9px; font-weight:700; cursor:pointer; margin-left:8px; }
+  .err { color:var(--red); font-size:13px; margin-top:8px; min-height:15px; }
+  footer { color:var(--mut); font-size:12px; padding:18px 32px; border-top:1px solid var(--line); }
   .claim { color:var(--mut); font-size:13px; }
-  footer { color:var(--mut); font-size:12px; padding:20px 32px; border-top:1px solid var(--line); }
-  /* gate */
-  #gate { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; z-index:10; }
-  #gate h1 { font-size:22px; } #gate .box { display:flex; gap:10px; }
-  #gate input { background:var(--panel); border:1px solid var(--line); color:var(--ink); padding:11px 14px; border-radius:10px; font-size:15px; width:240px; }
-  #gate button { background:var(--mint); color:#06251a; border:0; padding:11px 18px; border-radius:10px; font-weight:700; cursor:pointer; }
-  #gate .err { color:var(--red); font-size:13px; min-height:16px; }
-  #app { display:none; }
 </style>
 </head>
 <body>
-<div id="gate">
-  <h1>BLACK VOYAGE <b>Email Marketing</b></h1>
-  <div class="sub">Enter access code to view</div>
-  <div class="box"><input id="code" type="password" placeholder="access code" autofocus /><button id="go">Unlock</button></div>
-  <div class="err" id="err"></div>
-</div>
-
-<div id="app">
-<header><h1>BLACK VOYAGE <b>Email Marketing</b></h1><span class="sub" id="meta"></span></header>
+<header>
+  <h1>BLACK VOYAGE — <b>Email Marketing OS</b></h1>
+  <div class="sub">System console · the whole pipeline + the numbers in one place</div>
+</header>
 <main>
-  <div class="cards" id="cards"></div>
-  <section><h2>Flow gap matrix — what to build next</h2><table id="gaps"></table></section>
-  <section><h2>Flow performance (rates)</h2><table id="rates"></table></section>
-  <section><h2>Approved claims (verbatim)</h2><div id="claims"></div></section>
-</main>
-<footer>Powered by the BV Email Marketing OS shared warehouse</footer>
-</div>
 
+  <section>
+    <h2>System map — Klaviyo → warehouse → tool → shared DB → apps</h2>
+    <div class="map"><pre class="mermaid">
+flowchart LR
+  K["Klaviyo<br/>(source)"] -->|pull| ING["Ingest<br/>cache · backfill · daily"]
+  subgraph ENG["Local engine — PGlite"]
+    ING --> RAW["RAW"] --> CORE["CORE<br/>customers · events · orders · flows · stats"] --> MARTS["MARTS<br/>gaps · rates · KPIs · features"]
+    SYS["_System brand docs"] -->|embed| KN["KNOWLEDGE<br/>160 chunks + claims"]
+  end
+  MARTS --> MCP["BV Data MCP<br/>6 read-only tools"]
+  KN --> MCP
+  MARTS -->|sync| FS["Shared Firestore<br/>bv-infra · 249 docs"]
+  KN --> FS
+  MARTS -->|export| DR["Google Drive<br/>CLAUDE DATABASE"]
+  FS --> DASH["This dashboard"]
+  FS --> SB["BV Second Brain"]
+  FS --> RET["Retention Command"]
+  MCP --> EM["FigmaXClaude Email"]
+  MCP --> IM["ClaudeXFigma"]
+    </pre></div>
+  </section>
+
+  <section>
+    <h2>Components &amp; status</h2>
+    <div class="grid" id="components"></div>
+  </section>
+
+  <section>
+    <h2>Operating loop</h2>
+    <div class="loop">
+      <div class="step"><b>1</b> Gap matrix flags a missing flow</div>
+      <div class="step"><b>2</b> AI drafts a brief</div>
+      <div class="step"><b>3</b> You approve (gate)</div>
+      <div class="step"><b>4</b> FigmaXClaude builds the email</div>
+      <div class="step"><b>5</b> Ship to Klaviyo</div>
+      <div class="step"><b>6</b> Measure → back to 1</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Live numbers <span class="tag">code-gated</span></h2>
+    <div id="gate" class="gate">
+      Enter access code to view the numbers:
+      <input id="code" type="password" placeholder="access code" />
+      <button id="go">Unlock</button>
+      <div class="err" id="err"></div>
+    </div>
+    <div id="data" style="display:none">
+      <div class="grid" id="cards" style="margin-bottom:20px"></div>
+      <h2>Flow gap matrix — what to build next</h2><table id="gaps"></table>
+      <h2 style="margin-top:26px">Flow performance (rates)</h2><table id="rates"></table>
+      <h2 style="margin-top:26px">Approved claims</h2><div id="claims"></div>
+    </div>
+  </section>
+
+</main>
+<footer>Powered by the BV Email Marketing OS warehouse · architecture is open · numbers require the code</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { primaryColor:'#15161a', primaryTextColor:'#f4f5f7', lineColor:'#2BE5A3', primaryBorderColor:'#26282f' } });
+</script>
 <script>
 const $ = (id) => document.getElementById(id);
 const pct = (x) => x == null ? '—' : (Number(x)*100).toFixed(1) + '%';
 const b64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 
-function render(d) {
-  $('gate').style.display = 'none'; $('app').style.display = 'block';
-  $('meta').textContent = d.generated_at ? 'snapshot ' + new Date(d.generated_at).toLocaleString() : '';
-  const c = d.counts || {};
-  $('cards').innerHTML = [['Flows',c.flows],['Campaigns',c.campaigns],['Brand chunks',c.knowledge_chunks],['Approved claims',c.approved_claims],['Missing flows',(d.flow_gaps||[]).filter(g=>!g.exists).length]]
-    .map(([l,n]) => `<div class="card"><div class="n">${n??'—'}</div><div class="l">${l}</div></div>`).join('');
-  $('gaps').innerHTML = '<tr><th>Flow type</th><th>Status</th><th>Opportunity</th><th>Notes</th></tr>' +
-    (d.flow_gaps||[]).map(g => { const st = !g.exists ? '<span class="pill miss">MISSING</span>' : g.is_live ? '<span class="pill live">LIVE</span>' : '<span class="pill paused">PAUSED</span>';
-      const w = Math.min(100, Number(g.opportunity_score)||0);
-      return `<tr><td>${g.flow_type}</td><td>${st}</td><td><div class="bar"><i style="width:${w}%"></i></div></td><td class="claim">${g.notes||''}</td></tr>`; }).join('');
-  $('rates').innerHTML = '<tr><th>Flow</th><th>Status</th><th>Msgs</th><th>Open</th><th>Click</th><th>Conv</th></tr>' +
-    (d.flow_rates||[]).map(f => `<tr><td>${f.name}</td><td>${f.status||'—'}</td><td>${f.message_count}</td><td>${pct(f.open_rate)}</td><td>${pct(f.click_rate)}</td><td>${pct(f.conversion_rate)}</td></tr>`).join('');
-  $('claims').innerHTML = (d.approved_claims||[]).map(a => `<div style="padding:6px 0;border-bottom:1px solid var(--line)"><b>${a.claim}</b> <span class="claim">— ${a.use_as||''} (${a.category})</span></div>`).join('');
-}
+// Component status (architecture — non-confidential, always shown)
+const COMPONENTS = [
+  ['live','Klaviyo ingest','cache-seeded now; live backfill ready (needs key)'],
+  ['live','Warehouse (PGlite)','RAW → CORE → MARTS, medallion model'],
+  ['live','Brand knowledge','_System embedded: 160 chunks + approved claims'],
+  ['live','BV Data MCP','6 read-only tools for any Claude session'],
+  ['live','Shared Firestore','bv-infra · bv_email_marketing__* · 249 docs'],
+  ['live','Drive mirror','CLAUDE DATABASE: human doc + JSON'],
+  ['live','This dashboard','GitHub Pages, code-gated'],
+  ['live','Connectors','Email builder · image pipeline · Retention · Second Brain (read)'],
+  ['pend','Live Klaviyo data','customers/orders/revenue — run backfill with your key'],
+  ['pend','Always-on engine','cloud-run the engine (optional upgrade)'],
+];
+$('components').innerHTML = COMPONENTS.map(([s,t,d]) =>
+  `<div class="comp"><div class="t"><span class="dot ${s}"></span>${t}</div><div class="d">${d}</div></div>`).join('');
 
+function renderData(d) {
+  $('gate').style.display = 'none'; $('data').style.display = 'block';
+  const c = d.counts || {};
+  $('cards').innerHTML = [['Flows',c.flows],['Campaigns',c.campaigns],['Brand chunks',c.knowledge_chunks],['Claims',c.approved_claims],['Missing flows',(d.flow_gaps||[]).filter(g=>!g.exists).length]]
+    .map(([l,n]) => `<div class="comp"><div class="t" style="font-size:22px">${n??'—'}</div><div class="d">${l}</div></div>`).join('');
+  $('gaps').innerHTML = '<tr><th>Flow</th><th>Status</th><th>Opportunity</th><th>Notes</th></tr>' +
+    (d.flow_gaps||[]).map(g => { const st = !g.exists?'<span class="pill miss">MISSING</span>':g.is_live?'<span class="pill lv">LIVE</span>':'<span class="pill pa">PAUSED</span>';
+      return `<tr><td>${g.flow_type}</td><td>${st}</td><td>${g.opportunity_score}</td><td class="claim">${g.notes||''}</td></tr>`; }).join('');
+  $('rates').innerHTML = '<tr><th>Flow</th><th>Msgs</th><th>Open</th><th>Click</th><th>Conv</th></tr>' +
+    (d.flow_rates||[]).map(f => `<tr><td>${f.name}</td><td>${f.message_count}</td><td>${pct(f.open_rate)}</td><td>${pct(f.click_rate)}</td><td>${pct(f.conversion_rate)}</td></tr>`).join('');
+  $('claims').innerHTML = (d.approved_claims||[]).map(a => `<div style="padding:6px 0;border-bottom:1px solid var(--line)"><b>${a.claim}</b> <span class="claim">— ${a.use_as||''}</span></div>`).join('');
+}
 async function decrypt(code, blob) {
   const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(code), 'PBKDF2', false, ['deriveKey']);
   const key = await crypto.subtle.deriveKey({ name:'PBKDF2', salt:b64(blob.salt), iterations:blob.iters, hash:'SHA-256' }, km, { name:'AES-GCM', length:256 }, false, ['decrypt']);
   const pt = await crypto.subtle.decrypt({ name:'AES-GCM', iv:b64(blob.iv) }, key, b64(blob.ct));
   return JSON.parse(new TextDecoder().decode(pt));
 }
-
 let ENC = null;
 (async () => {
-  // Production: encrypted blob + code gate. Local dev: plaintext warehouse.json, no gate.
-  try {
-    const r = await fetch('data.enc', { cache:'no-store' });
-    if (r.ok) { ENC = await r.json(); return; }
-  } catch {}
-  try { const r = await fetch('warehouse.json', { cache:'no-store' }); if (r.ok) render(await r.json()); } catch { $('err').textContent = 'No data found.'; }
+  try { const r = await fetch('data.enc', {cache:'no-store'}); if (r.ok) { ENC = await r.json(); return; } } catch {}
+  try { const r = await fetch('warehouse.json', {cache:'no-store'}); if (r.ok) renderData(await r.json()); } catch {}
 })();
-
-async function unlock() {
-  const code = $('code').value.trim(); if (!code || !ENC) return;
-  $('err').textContent = 'Unlocking…';
-  try { render(await decrypt(code, ENC)); }
-  catch { $('err').textContent = 'Wrong code.'; }
-}
+async function unlock() { const code = $('code').value.trim(); if (!code || !ENC) return; $('err').textContent = 'Unlocking…';
+  try { renderData(await decrypt(code, ENC)); } catch { $('err').textContent = 'Wrong code.'; } }
 $('go').onclick = unlock;
 $('code').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
 </script>
